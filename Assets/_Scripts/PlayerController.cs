@@ -15,7 +15,9 @@ public class PlayerController : MonoBehaviour
     CharacterController characterController;
     Vector3 moveDirection = Vector3.zero;
     float rotationX = 0;
- 
+
+    Animator myAnimator;
+
     [HideInInspector]
     public bool canMove = true;
  
@@ -27,6 +29,7 @@ public class PlayerController : MonoBehaviour
  
     void Start()
     {
+        myAnimator = GetComponent<Animator>();
         _avatar = GetComponent<Alteruna.Avatar>();
  
         if (!_avatar.IsMe)
@@ -45,7 +48,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!_avatar.IsMe)
             return;
-        
+        // Yes
         bool isRunning = false;
  
         // Press Left Shift to run
@@ -59,7 +62,24 @@ public class PlayerController : MonoBehaviour
         float curSpeedY = canMove ? (isRunning ? runningSpeed : walkingSpeed) * Input.GetAxis("Horizontal") : 0;
         float movementDirectionY = moveDirection.y;
         moveDirection = (forward * curSpeedX) + (right * curSpeedY);
- 
+
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            myAnimator.SetBool("RunForward", true);
+        }
+        else if (Input.GetKeyDown(KeyCode.D) == true && Input.GetKeyDown(KeyCode.W) == false)
+        {
+            myAnimator.SetBool("strafeRight", true);
+        }
+        if (Input.GetKeyUp(KeyCode.W))
+        {
+            myAnimator.SetBool("RunForward", false);
+        }
+        if (Input.GetKeyUp(KeyCode.D))
+        {
+            myAnimator.SetBool("strafeRight", false);
+        }
+
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
         {
             moveDirection.y = jumpSpeed;
