@@ -22,7 +22,6 @@ public class PlayerController : MonoBehaviour
     public bool canMove = true;
  
     [SerializeField]
-    private float cameraYOffset = 0.4f;
     private Camera playerCamera;
  
     private Alteruna.Avatar _avatar;
@@ -37,7 +36,6 @@ public class PlayerController : MonoBehaviour
         
         characterController = GetComponent<CharacterController>();
         playerCamera = Camera.main;
-        playerCamera.transform.position = new Vector3(transform.position.x, transform.position.y + cameraYOffset, transform.position.z);
         playerCamera.transform.SetParent(transform);
         // Lock cursor
         Cursor.lockState = CursorLockMode.Locked;
@@ -67,9 +65,13 @@ public class PlayerController : MonoBehaviour
         {
             myAnimator.SetBool("RunForward", true);
         }
-        else if (Input.GetKeyDown(KeyCode.D) == true && Input.GetKeyDown(KeyCode.W) == false)
+        else if (Input.GetKeyDown(KeyCode.D))
         {
             myAnimator.SetBool("strafeRight", true);
+        }
+        else if (Input.GetKeyDown(KeyCode.A))
+        {
+            myAnimator.SetBool("strafeLeft", true);
         }
         if (Input.GetKeyUp(KeyCode.W))
         {
@@ -79,9 +81,14 @@ public class PlayerController : MonoBehaviour
         {
             myAnimator.SetBool("strafeRight", false);
         }
+        if (Input.GetKeyUp(KeyCode.A))
+        {
+            myAnimator.SetBool("strafeLeft", false);
+        }
 
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
         {
+            myAnimator.SetBool("Jump", true);
             moveDirection.y = jumpSpeed;
         }
         else
