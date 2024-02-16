@@ -73,6 +73,10 @@ public class PlayerController : MonoBehaviour
         {
             myAnimator.SetBool("strafeLeft", true);
         }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            myAnimator.SetBool("Backwards", true);
+        }
         if (Input.GetKeyUp(KeyCode.W))
         {
             myAnimator.SetBool("RunForward", false);
@@ -84,6 +88,14 @@ public class PlayerController : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.A))
         {
             myAnimator.SetBool("strafeLeft", false);
+        }
+        if (Input.GetKeyUp(KeyCode.S))
+        {
+            myAnimator.SetBool("Backwards", false);
+        }
+        if (characterController.isGrounded)
+        {
+            myAnimator.SetBool("Jump", false);
         }
 
         if (Input.GetButton("Jump") && canMove && characterController.isGrounded)
